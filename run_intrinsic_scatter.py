@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # Perform Bayesian Intrinsic Scatter analysis
     S, P = BayesianIntrinsicScatter(
         observed,
-        total_scatter * 1.1,
+        total_scatter,
         X,
         Y,
         sample_phi_params,

@@ -42,15 +42,21 @@ def sample_phi(params, G):
 
 
 def generate_sample(N=500):
-    # three variables sampled from some base distribution
-    var1 = np.random.normal(loc=1, scale=4, size=N)
-    var2 = np.random.normal(loc=10, scale=5, size=N)
-    var3 = np.random.normal(loc=3, scale=1, size=N)
+    # Three variables sampled from some base distribution.
+    # A fourth variable which is just a combination of two others.
+    # VarSample generates variables which are correlated by nature,
+    # instead of correlated by the construction of X and Y.
+    VarSample = np.random.multivariate_normal(
+        mean=[1.8, 10], cov=[[0.3, 0.543], [0.543, 1.0]], size=N
+    )
+    var1 = VarSample[:, 0]
+    var2 = np.random.normal(loc=10, scale=2, size=N)
+    var3 = VarSample[:, 1]
     var4 = -var2 / 2 + var3 / 3
     # The uncertainty for each of the three variables
     var1_err = np.random.uniform(low=0.5, high=1, size=N)
-    var2_err = np.random.uniform(low=0.6, high=2, size=N)
-    var3_err = np.random.uniform(low=0.5, high=1.5, size=N)
+    var2_err = np.random.uniform(low=0.2, high=0.5, size=N)
+    var3_err = np.random.uniform(low=0.3, high=0.8, size=N)
     var4_err = np.sqrt((var2_err / 10) ** 2 + (var3_err / 3) ** 2)
 
     # Construct the object list where each dictionary in the list is one "galaxy"
