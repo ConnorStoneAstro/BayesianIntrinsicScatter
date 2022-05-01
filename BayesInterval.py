@@ -34,5 +34,5 @@ def integrate_posterior(a, pdfx, pdfy):
     return total
   
 def bayes_interval(S,P, prob = 0.682689):
-    bayes_a = minimize(lambda a: np.abs(integrate_posterior(a,S,P) - credible_probability), x0 = np.max(P)/2.,method = 'Nelder-Mead')
+    bayes_a = minimize(lambda a: np.abs(integrate_posterior(a,S,P) - prob), x0 = np.max(P)/2.,method = 'Nelder-Mead')
     return pdf_crosses(bayes_a.x[0], S, P)
