@@ -8,6 +8,7 @@ from generate_mock_data import (
     generate_sample,
 )
 from Stoneetal2021 import BayesianIntrinsicScatter
+from BayesInterval import bayes_interval
 from scipy import odr
 import numpy as np
 import matplotlib.pyplot as plt
@@ -65,16 +66,25 @@ if __name__ == "__main__":
     intrinsic_scatter = np.std(residuals)
 
     # Plot posterior and intrinsic scatter
-    plt.plot(S, P, color="k", linewidth=2, label="Posterior PDF")
+    region = bayes_interval(S,P)
+    plt.plot(S, P, color="r", linewidth=2, label="Posterior PDF")
+    for i,r in enumerate(region):
+        plt.axvline(
+            r,
+            color="r",
+            linewidth=1,
+            linestyle = '--',
+            label="Credible Region" if i == 0 else None,
+        )    
     plt.axvline(
         intrinsic_scatter,
-        color="r",
+        color="k",
         linewidth=2,
         label="true $\\sigma_i = %.2f$" % intrinsic_scatter,
     )
     plt.axvline(
         max(0, classical_int_scatter),
-        color="k",
+        color="g",
         linewidth=2,
         linestyle="--",
         label="classical $\\sigma_i = %.2f$" % classical_int_scatter,
